@@ -316,7 +316,7 @@ body.privacy-mode .detail-card-num{filter:blur(5px)}
 .drag-handle span{display:block;height:2px;background:var(--gray-fill3);border-radius:1px}
 </style>
 <!-- PWA Manifest -->
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="./manifest.json">
 
 <!-- Theme Color (tarayıcı adres çubuğu rengi) -->
 <meta name="theme-color" content="#007AFF" media="(prefers-color-scheme: light)">
@@ -331,64 +331,64 @@ body.privacy-mode .detail-card-num{filter:blur(5px)}
 <meta name="apple-mobile-web-app-title" content="IBAN Pro">
 
 <!-- Apple Touch Icon'lar (Ana Ekran ikonu) -->
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
-<link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180x180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="./icons/icon-192x192.png">
 
 <!-- iOS Splash Screens (Launch Images) -->
 <!-- iPhone SE (640x1136) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-640x1136.png"
+      href="./icons/splash/splash-640x1136.png"
       media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
 <!-- iPhone 8 (750x1334) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-750x1334.png"
+      href="./icons/splash/splash-750x1334.png"
       media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
 <!-- iPhone 8 Plus (1242x2208) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-1242x2208.png"
+      href="./icons/splash/splash-1242x2208.png"
       media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
 <!-- iPhone X / XS (1125x2436) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-1125x2436.png"
+      href="./icons/splash/splash-1125x2436.png"
       media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
 <!-- iPhone XR (828x1792) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-828x1792.png"
+      href="./icons/splash/splash-828x1792.png"
       media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
 <!-- iPhone XS Max (1242x2688) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-1242x2688.png"
+      href="./icons/splash/splash-1242x2688.png"
       media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
 <!-- iPhone 12/13 (1170x2532) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-1170x2532.png"
+      href="./icons/splash/splash-1170x2532.png"
       media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
 <!-- iPhone 12/13 Pro Max (1284x2778) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-1284x2778.png"
+      href="./icons/splash/splash-1284x2778.png"
       media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)">
 <!-- iPad Pro 12.9" (2048x2732) -->
 <link rel="apple-touch-startup-image"
-      href="/icons/splash/splash-2048x2732.png"
+      href="./icons/splash/splash-2048x2732.png"
       media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
 
 <!-- Favicon'lar -->
-<link rel="icon" type="image/x-icon"  href="/icons/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="icon" type="image/x-icon"  href="./icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png">
 
 <!-- Microsoft Tiles -->
 <meta name="msapplication-TileColor"   content="#007AFF">
-<meta name="msapplication-TileImage"   content="/icons/icon-144x144.png">
+<meta name="msapplication-TileImage"   content="./icons/icon-144x144.png">
 <meta name="msapplication-config"      content="none">
 
 <!-- Open Graph (Paylaşım önizlemesi) -->
 <meta property="og:type"        content="website">
 <meta property="og:title"       content="IBAN Manager Pro">
 <meta property="og:description" content="IBAN hesaplarınızı kolayca yönetin, kopyalayın ve paylaşın.">
-<meta property="og:image"       content="/icons/icon-512x512.png">
+<meta property="og:image"       content="./icons/icon-512x512.png">
 
 <!-- SEO -->
 <meta name="description" content="IBAN Manager Pro — Türkiye'nin en kapsamlı IBAN yönetim uygulaması. Hesaplarınızı kaydedin, kopyalayın, paylaşın.">
@@ -2052,8 +2052,8 @@ init();
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('/sw.js', {
-          scope: '/',
+        const reg = await navigator.serviceWorker.register('./sw.js', {
+          scope: './',
           updateViaCache: 'none',   // Her yüklemede güncelleme kontrolü
         });
 
@@ -2184,9 +2184,9 @@ init();
     console.log('[PWA] App installed!');
     deferredPrompt = null;
     if (typeof showToast === 'function') showToast('🏦 IBAN Manager Pro yüklendi!');
-    if (window.AppState) {
-      window.AppState.stats.pwaInstalled = true;
-      window.AppState.save();
+    if (typeof state !== 'undefined' && typeof save === 'function') {
+      state.stats.pwaInstalled = true;
+      save();
     }
   });
 
