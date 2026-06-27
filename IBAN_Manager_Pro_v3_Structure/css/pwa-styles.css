@@ -1,0 +1,167 @@
+/* ═══════════════════════════════════════════════════════════════
+   IBAN Manager Pro — PWA Ek Stiller
+   Bu dosyanın içeriğini styles.css'in SONUNA ekleyin.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Standalone (Ana ekrandan açıldığında) Safe Area Padding ── */
+.pwa-standalone {
+  /* iOS notch & Dynamic Island için */
+  --safe-top:    env(safe-area-inset-top,    0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left,   0px);
+  --safe-right:  env(safe-area-inset-right,  0px);
+}
+
+/* Tab bar'ı ekranın en altına taşı + safe area */
+.pwa-standalone .tab-bar,
+.pwa-standalone .bottom-nav {
+  padding-bottom: max(var(--safe-bottom), 8px);
+}
+
+/* İçerik alanı status bar'ın altına kaymasın */
+.pwa-standalone .app-header,
+.pwa-standalone .nav-bar {
+  padding-top: max(var(--safe-top), 12px);
+}
+
+/* iOS home indicator alanı */
+.pwa-standalone .page-content {
+  padding-bottom: calc(80px + max(var(--safe-bottom), 0px));
+}
+
+/* ── Offline İndikatör ── */
+.is-offline::after {
+  content: '📵 Çevrimdışı';
+  position: fixed;
+  top: max(env(safe-area-inset-top, 0px), 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #FF3B30;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(255,59,48,0.4);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── PWA Install Butonu (Settings'te göster) ── */
+#pwaInstallBtn {
+  display: none; /* JS tarafından gösterilir */
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--accent, #007AFF);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  text-align: center;
+  transition: opacity 0.15s;
+}
+
+#pwaInstallBtn:active { opacity: 0.8; }
+
+/* ── Update Banner ── */
+.pwa-update-banner {
+  position: fixed;
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  left: 16px;
+  right: 16px;
+  background: #1C1C1E;
+  color: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 9998;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pwa-update-banner .update-text {
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.pwa-update-banner .update-btn {
+  background: #007AFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── iOS "Ekle" Banner (Safari'de PWA ipucu) ── */
+.ios-install-hint {
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(28,28,30,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-size: 13px;
+  text-align: center;
+  max-width: 280px;
+  width: calc(100% - 32px);
+  z-index: 9997;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  animation: fadeIn 0.4s ease;
+}
+
+.ios-install-hint .hint-icon {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Splash Screen Geçişi (PWA açılışında beyaz flash'ı önler) ── */
+html {
+  background-color: #007AFF;
+}
+
+body {
+  /* Uygulama yüklenince düz renge geç */
+  background-color: var(--bg, #F2F2F7);
+}
+
+/* ── Reduce Motion (PWA animasyonları) ── */
+@media (prefers-reduced-motion: reduce) {
+  .is-offline::after,
+  .pwa-update-banner,
+  .ios-install-hint {
+    animation: none;
+  }
+}

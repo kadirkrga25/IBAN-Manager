@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#007AFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0F"  media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Çevrimdışı — IBAN Manager Pro</title>
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #007AFF;
+      --red:    #FF3B30;
+      --green:  #34C759;
+      --bg:     #F2F2F7;
+      --card:   #FFFFFF;
+      --text1:  #1C1C1E;
+      --text2:  #3C3C43;
+      --text3:  rgba(60,60,67,.6);
+      --sep:    rgba(60,60,67,.12);
+      --sat: env(safe-area-inset-top,    0px);
+      --sar: env(safe-area-inset-right,  0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left,   0px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:    #000000;
+        --card:  #1C1C1E;
+        --text1: #FFFFFF;
+        --text2: rgba(235,235,245,.6);
+        --text3: rgba(235,235,245,.3);
+        --sep:   rgba(84,84,88,.6);
+      }
+    }
+
+    html {
+      background: var(--blue);
+      /* Splash arası beyaz flash engelleme */
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text1);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+                   'SF Pro Text', 'Helvetica Neue', 'Segoe UI', sans-serif;
+      min-height: 100dvh;
+      min-height: calc(100vh + var(--sat));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--sat) + 24px) calc(var(--sar) + 20px)
+               calc(var(--sab) + 24px) calc(var(--sal) + 20px);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Logo & İkon ─── */
+    .app-icon {
+      width: 96px;
+      height: 96px;
+      background: var(--blue);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 32px rgba(0,122,255,.28), 0 2px 8px rgba(0,122,255,.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-icon::before {
+      /* Parlama efekti */
+      content: '';
+      position: absolute;
+      top: -30%; left: -30%;
+      width: 60%; height: 60%;
+      background: rgba(255,255,255,.25);
+      border-radius: 50%;
+      filter: blur(12px);
+    }
+
+    /* SVG banka ikonu */
+    .bank-icon {
+      width: 52px;
+      height: 52px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bank-icon .roof {
+      fill: white;
+    }
+    .bank-icon .base { fill: white; }
+    .bank-icon .col  { fill: white; }
+
+    /* ─── Başlık ─── */
+    .app-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text3);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      text-align: center;
+      margin-bottom: 10px;
+      color: var(--text1);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text3);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 32px;
+      max-width: 300px;
+    }
+
+    /* ─── Bilgi Kartları ─── */
+    .cards {
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 28px;
+    }
+
+    .info-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 0 0 .5px var(--sep);
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .info-text { flex: 1; }
+
+    .info-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text1);
+      margin-bottom: 2px;
+    }
+
+    .info-sub {
+      font-size: 13px;
+      color: var(--text3);
+      line-height: 1.4;
+    }
+
+    /* ─── Buton ─── */
+    .retry-btn {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      padding: 16px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: -.2px;
+      transition: transform .12s ease, opacity .12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .retry-btn:active {
+      transform: scale(.97);
+      opacity: .85;
+    }
+
+    /* ─── Durum Göstergesi ─── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+      transition: background .3s ease;
+    }
+
+    .status-dot.online  { background: var(--green); animation: none; }
+    .status-dot.offline { animation: pulse 1.4s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .25; }
+    }
+
+    /* ─── Bağlanıyor animasyonu ─── */
+    .connecting {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blue);
+      margin-top: 12px;
+    }
+
+    .connecting.visible { display: flex; }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0,122,255,.2);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .status-dot.offline { animation: none; }
+      .spinner            { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="app-icon" role="img" aria-label="IBAN Manager Pro simgesi">
+    <svg class="bank-icon" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Çatı (üçgen) -->
+      <polygon class="roof" points="26,6 48,20 4,20"/>
+      <!-- Sütunlar -->
+      <rect class="col" x="10" y="23" width="6" height="18" rx="1"/>
+      <rect class="col" x="23" y="23" width="6" height="18" rx="1"/>
+      <rect class="col" x="36" y="23" width="6" height="18" rx="1"/>
+      <!-- Taban -->
+      <rect class="base" x="4" y="43" width="44" height="5" rx="2"/>
+    </svg>
+  </div>
+
+  <!-- Başlık -->
+  <p class="app-name">IBAN Manager Pro</p>
+  <h1>Çevrimdışı Mod</h1>
+  <p class="subtitle">
+    İnternet bağlantısı yok. Bağlantı kurulduğunda uygulama otomatik olarak devam eder.
+  </p>
+
+  <!-- Bilgi Kartları -->
+  <div class="cards" role="list">
+
+    <div class="info-card" role="listitem">
+      <div class="info-icon" aria-hidden="true">💾</div>
+      <div class="info-text">
+        <div class="info-title">Verileriniz Güvende</div>
+        <div class="info-sub">Tüm IBAN'larınız cihazınızda saklanır, kaybolmaz.</div>
+      </div>
+    </div>
+
+    <div class="info-card" role="listitem">
+      <div class="info-icon" aria-hidden="true">⚡️</div>
+      <div class="info-text">
+        <div class="info-title">Uygulama Çevrimdışı Çalışır</div>
+        <div class="info-sub">İlk yükleme tamamlandıktan sonra internet gerekmez.</div>
+      </div>
+    </div>
+
+    <div class="info-card" role="listitem">
+      <div class="info-icon" aria-hidden="true">🔄</div>
+      <div class="info-text">
+        <div class="info-title">Otomatik Yeniden Bağlanma</div>
+        <div class="info-sub">Bağlantı gelince uygulama kendiliğinden açılır.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tekrar Dene Butonu -->
+  <button class="retry-btn" id="retryBtn" onclick="retryConnection()" aria-label="Yeniden bağlanmayı dene">
+    Tekrar Dene
+  </button>
+
+  <!-- Bağlanıyor -->
+  <div class="connecting" id="connectingEl" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    Bağlanıyor…
+  </div>
+
+  <!-- Durum -->
+  <div class="status-bar" aria-live="polite" aria-atomic="true">
+    <div class="status-dot offline" id="statusDot" role="status" aria-label="bağlantı durumu"></div>
+    <span id="statusText">İnternet bağlantısı bekleniyor</span>
+  </div>
+
+  <script>
+    'use strict';
+
+    const dot         = document.getElementById('statusDot');
+    const statusText  = document.getElementById('statusText');
+    const retryBtn    = document.getElementById('retryBtn');
+    const connecting  = document.getElementById('connectingEl');
+
+    let checkInterval = null;
+    let isChecking    = false;
+
+    function setOnline() {
+      dot.className       = 'status-dot online';
+      statusText.textContent = 'Bağlantı kuruldu! Yönlendiriliyor…';
+      connecting.classList.remove('visible');
+      retryBtn.disabled = true;
+
+      /* Kısa gecikme ile ana sayfaya yönlendir */
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 900);
+    }
+
+    function setOffline() {
+      dot.className       = 'status-dot offline';
+      statusText.textContent = 'İnternet bağlantısı bekleniyor';
+      connecting.classList.remove('visible');
+      retryBtn.disabled = false;
+      isChecking = false;
+    }
+
+    function retryConnection() {
+      if (isChecking) return;
+      isChecking = true;
+      connecting.classList.add('visible');
+      retryBtn.disabled = true;
+      statusText.textContent = 'Kontrol ediliyor…';
+
+      /* navigator.onLine bazen yanıltıcı olabilir; fetch ile kontrol et */
+      fetch('/manifest.json', { cache: 'no-store', method: 'HEAD' })
+        .then(r => { if (r.ok) setOnline(); else setOffline(); })
+        .catch(() => {
+          /* Service Worker cache'ten döndürdüyse de online sayma */
+          if (navigator.onLine) {
+            setOnline();
+          } else {
+            setOffline();
+          }
+        });
+    }
+
+    /* Online / Offline event'lerini dinle */
+    window.addEventListener('online',  () => {
+      /* Kısa bir fetch ile doğrula */
+      setTimeout(retryConnection, 300);
+    });
+    window.addEventListener('offline', setOffline);
+
+    /* Periyodik kontrol: her 8 saniyede bir */
+    checkInterval = setInterval(() => {
+      if (!isChecking && navigator.onLine) retryConnection();
+    }, 8000);
+
+    /* Başlangıç durumu */
+    if (navigator.onLine) {
+      /* Sayfa online iken açıldı — index.html'e git */
+      setTimeout(retryConnection, 500);
+    }
+  </script>
+
+</body>
+</html>
